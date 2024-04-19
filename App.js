@@ -1,20 +1,29 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+import React, { useEffect } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import CharacterCreationScreen from './assets/CharacterCreationScreen';
+import CharacterListScreen from './assets/CharacterListScreen';
+import CharacterViewScreen from './assets/CharacterViewScreen';
+import { initDb } from './assets/DBService'; // Import the initDb function
+
+const Stack = createStackNavigator();
+
+function App() {
+    // Initialize the database schema when the app starts
+    useEffect(() => {
+        initDb();
+    }, []);
+
+    return (
+        <NavigationContainer>
+            <Stack.Navigator>
+                <Stack.Screen name="CharacterCreation" component={CharacterCreationScreen} />
+                <Stack.Screen name="CharacterList" component={CharacterListScreen} />
+                <Stack.Screen name="CharacterView" component={CharacterViewScreen} />
+            </Stack.Navigator>
+        </NavigationContainer>
+    );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
